@@ -1,6 +1,7 @@
 export type AppEvent = {
     id: string
     title: string
+    category: string
     date: string
     description: string
     city: string
