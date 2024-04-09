@@ -2,6 +2,13 @@ import { createSlice } from '@reduxjs/toolkit'
 import { sampleData } from '../../app/api/sampleData'
 import { AppEvent } from '../../app/types/event'
 
+/*
+State
+initialState
+createSlice
+export
+*/
+
 type State = {
     events: AppEvent[]
 }
@@ -11,9 +18,10 @@ const initialState: State = {
 }
 
 /*
-1. create slice 
-2. add to store
-3. use with useAppSelector
+1. create store
+2. create slice 
+3. add to store
+4. use with useAppSelector
 */
 export const eventSlice = createSlice({
     name: 'events',
