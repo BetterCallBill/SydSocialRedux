@@ -12,7 +12,7 @@ export const router = createBrowserRouter([
             { path: '/events', element: <EventDashboard /> },
             { path: '/events/:id', element: <EventDetail /> },
             { path: '/manage/:id', element: <EventForm /> },
-            { path: '/createEvent', element: <EventForm /> },
+            { path: '/createEvent', element: <EventForm key='create' /> },
         ],
     },
 ]);
