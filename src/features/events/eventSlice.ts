@@ -33,20 +33,14 @@ export const eventSlice = createSlice({
             },
             prepare: (events: any) => {
                 let eventArray: AppEvent[] = [];
-                Array.isArray(events) ? eventArray = events : eventArray.push(events)
+                Array.isArray(events) ? eventArray = events : eventArray.push(events);
                 const mapped = eventArray.map((e: any) => {
                     return {...e, date: (e.date as Timestamp).toDate().toISOString()}
                 });
                 return {payload: mapped}
             }
-        },
-        createEvent: (state, action) => {
-            state.events.push(action.payload);
-        },
-        deleteEvent: (state, action) => {
-            state.events.splice(state.events.findIndex(evt => evt.id === action.payload), 1)
         }
     }
 })
 
-export const { createEvent, deleteEvent, setEvents } = eventSlice.actions;
+export const { setEvents } = eventSlice.actions;
