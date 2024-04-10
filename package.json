@@ -19,6 +19,7 @@
     "react-hook-form": "^7.51.2",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.3",
+    "react-toastify": "^10.0.5",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^3.0.0-beta.0"
   },
