@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../../../app/config/firebase';
 import { useDispatch } from 'react-redux';
-import { AppEvent } from '../../../app/types/event';
+import { AppEvent } from '../../../app/types/appEvent';
 import { actions } from '../eventSlice';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 
@@ -37,8 +37,8 @@ export default function EventDashboard() {
         return () => unsubscribe();
     }, [dispatch]);
 
-    if (loading) return <LoadingComponent />
-    
+    if (loading) return <LoadingComponent />;
+
     return (
         <Grid>
             <Grid.Column width={10}>

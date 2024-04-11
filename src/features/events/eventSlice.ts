@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { AppEvent } from '../../app/types/event'
+import { AppEvent } from '../../app/types/appEvent'
 import { Timestamp } from 'firebase/firestore'
 import { GenericActions, GenericState, createGenericSlice } from '../../app/store/genericSlice'
 
@@ -37,9 +37,9 @@ export const eventSlice = createGenericSlice({
                 let eventArray: AppEvent[] = [];
                 Array.isArray(events) ? eventArray = events : eventArray.push(events);
                 const mapped = eventArray.map((e: any) => {
-                    return {...e, date: (e.date as Timestamp).toDate().toISOString()}
+                    return { ...e, date: (e.date as Timestamp).toDate().toISOString() }
                 });
-                return {payload: mapped}
+                return { payload: mapped }
             }
         }
     }
