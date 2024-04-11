@@ -1,6 +1,7 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction } from '@reduxjs/toolkit'
 import { AppEvent } from '../../app/types/event'
 import { Timestamp } from 'firebase/firestore'
+import { GenericActions, GenericState, createGenericSlice } from '../../app/store/genericSlice'
 
 /*
 State
@@ -10,11 +11,11 @@ export
 */
 
 type State = {
-    events: AppEvent[]
+    data: AppEvent[]
 }
 
 const initialState: State = {
-    events: []
+    data: []
 }
 
 /*
@@ -23,13 +24,14 @@ const initialState: State = {
 3. add to store
 4. use with useAppSelector
 */
-export const eventSlice = createSlice({
+export const eventSlice = createGenericSlice({
     name: 'events',
-    initialState,
+    initialState: initialState as GenericState<AppEvent[]>,
     reducers: {
-        setEvents: {
+        success: {
             reducer: (state, action: PayloadAction<AppEvent[]>) => {
-                state.events = action.payload;
+                state.data = action.payload;
+                state.status = 'finished';
             },
             prepare: (events: any) => {
                 let eventArray: AppEvent[] = [];
@@ -43,4 +45,4 @@ export const eventSlice = createSlice({
     }
 })
 
-export const { setEvents } = eventSlice.actions;
+export const actions = eventSlice.actions as GenericActions<AppEvent[]>;

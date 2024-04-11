@@ -6,11 +6,11 @@ import { collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../../../app/config/firebase';
 import { useDispatch } from 'react-redux';
 import { AppEvent } from '../../../app/types/event';
-import { setEvents } from '../eventSlice';
+import { actions } from '../eventSlice';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 
 export default function EventDashboard() {
-    const { events } = useAppSelector(state => state.events);
+    const { data: events } = useAppSelector(state => state.events);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
 
@@ -25,7 +25,7 @@ export default function EventDashboard() {
                     evts.push({ id: doc.id, ...doc.data() } as AppEvent);
                 });
 
-                dispatch(setEvents(evts));
+                dispatch(actions.success(evts));
                 setLoading(false);
             },
             error: error => {

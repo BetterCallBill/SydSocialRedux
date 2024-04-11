@@ -4,37 +4,24 @@ import EventDetailedInfo from './EventDetailedInfo';
 import EventDetailedChat from './EventDetailedChat';
 import EventDetailedSidebar from './EventDetailedSidebar';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../app/store/store';
-import { useEffect, useState } from 'react';
-import { setEvents } from '../eventSlice';
+import { useAppSelector } from '../../../app/store/store';
+import { useEffect } from 'react';
+import { actions } from '../eventSlice';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
-import { doc, onSnapshot } from 'firebase/firestore';
-import { db } from '../../../app/config/firebase';
-import { toast } from 'react-toastify';
+import { useFireStore } from '../../../app/hooks/firestore/useFirestore';
 
 export default function EventDetailedPage() {
     const { id } = useParams();
-    const event = useAppSelector(state => state.events.events.find(e => e.id === id));
-    const dispatch = useAppDispatch();
-    const [loading, setLoading] = useState(true);
-    
+    const event = useAppSelector(state => state.events.data.find(e => e.id === id));
+    const {status} = useAppSelector(state => state.events);
+    const { loadDocument } = useFireStore('events');
+
     useEffect(() => {
         if (!id) return;
-        const unsubscribe = onSnapshot(doc(db, 'events', id), {
-            next: doc => {
-                dispatch(setEvents({id: doc.id, ...doc.data()}));
-                setLoading(false);
-            },
-            error: error => {
-                toast.error(error.message);
-                console.log('Collection error:', error);
-                setLoading(false);
-            },
-        });
-        return () => unsubscribe();
-    }, [id, dispatch]);
+        loadDocument(id, actions);
+    }, [id, loadDocument]);
 
-    if (loading) return <LoadingComponent />;
+    if (status === 'loading') return <LoadingComponent />;
 
     if (!event) return <h2>Event not found</h2>;
 
