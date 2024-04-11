@@ -1,31 +1,13 @@
-import { Button, Icon, Item, ItemGroup, List, Segment, SegmentGroup } from 'semantic-ui-react';
+import { Button, Icon, Item, ItemGroup, Label, List, Segment, SegmentGroup } from 'semantic-ui-react';
 import EventListAttendee from './EventListAttendee';
 import { AppEvent } from '../../../app/types/event';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-import { deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../../../app/config/firebase';
 
 type Props = {
     event: AppEvent;
 };
 
 export default function EventListItem({ event }: Props) {
-    const [loading, setLoading] = useState(false);
-
-    async function removeEvent() {
-        setLoading(true);
-        try {
-            await deleteDoc(doc(db, 'events', event.id));
-        } catch (error: any) {
-            console.log(error);
-            toast.error(error.message);
-        } finally {
-            setLoading(false);
-        }
-    }
-
     return (
         <SegmentGroup>
             <Segment>
@@ -35,6 +17,9 @@ export default function EventListItem({ event }: Props) {
                         <Item.Content>
                             <Item.Header>{event.title}</Item.Header>
                             <Item.Description>Hosted by {event.hostedBy}</Item.Description>
+                            {event.isCancelled && (
+                                <Label style={{ top: '-40px' }} ribbon="right" color="red" content="This event has been cancelled" />
+                            )}
                         </Item.Content>
                     </Item>
                 </ItemGroup>
@@ -54,7 +39,6 @@ export default function EventListItem({ event }: Props) {
             </Segment>
             <Segment clearing>
                 <span>{event.description}</span>
-                <Button loading={loading} onClick={removeEvent} color="red" floated="right" content="Delete" />
                 <Button as={Link} to={`/events/${event.id}`} color="teal" floated="right" content="View" />
             </Segment>
         </SegmentGroup>
