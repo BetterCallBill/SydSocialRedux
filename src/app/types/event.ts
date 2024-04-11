@@ -9,6 +9,7 @@ export type AppEvent = {
     hostedBy: string
     hostPhotoURL: string
     attendees: Attendee[]
+    isCancelled: boolean
 }
 
 export type Attendee = {
