@@ -5,6 +5,7 @@ import { useAppDispatch } from '../../app/store/store';
 import { closeModal } from '../../app/common/modals/modalSlice';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../app/config/firebase';
+import SocialLogin from './SocialLogin';
 
 export default function LoginForm() {
     const {
@@ -56,6 +57,7 @@ export default function LoginForm() {
                     content="Login"
                 />
                 <Divider horizontal>Or</Divider>
+                <SocialLogin />
             </Form>
         </ModalWrapper>
     );
