@@ -1,4 +1,4 @@
-import { AppEvent } from '../../../app/types/event';
+import { AppEvent } from '../../../app/types/appEvent';
 import EventListItem from './EventListItem';
 
 type Props = {

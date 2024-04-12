@@ -1,6 +1,6 @@
 import { Button, Icon, Item, ItemGroup, Label, List, Segment, SegmentGroup } from 'semantic-ui-react';
 import EventListAttendee from './EventListAttendee';
-import { AppEvent } from '../../../app/types/event';
+import { AppEvent } from '../../../app/types/appEvent';
 import { Link } from 'react-router-dom';
 
 type Props = {
