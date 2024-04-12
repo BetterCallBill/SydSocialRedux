@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Segment, Item, Header, Button, Image } from 'semantic-ui-react';
-import { AppEvent } from '../../../app/types/event';
+import { AppEvent } from '../../../app/types/appEvent';
 
 type Props = {
     event: AppEvent;
