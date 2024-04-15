@@ -1,7 +1,7 @@
 import { Grid } from 'semantic-ui-react';
 import EventList from './EventList';
 import { useAppSelector } from '../../../app/store/store';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { actions } from '../eventSlice';
 import { useFireStore } from '../../../app/hooks/firestore/useFirestore';
 import { QueryOptions } from '../../../app/hooks/firestore/types';
@@ -9,6 +9,7 @@ import EventFilters from './EventFilters';
 import EventListItemPlaceholder from './EventListItemPlaceholder';
 
 export default function EventDashboard() {
+    const contextRef = useRef(null);
     const { data: events, status } = useAppSelector(state => state.events);
     const { loadCollection } = useFireStore('events');
     const [query, setQuery] = useState<QueryOptions[]>([{ attribute: 'date', operator: '>=', value: new Date() }]);
@@ -21,7 +22,7 @@ export default function EventDashboard() {
 
     return (
         <Grid>
-            <Grid.Column width={10}>
+            <Grid.Column width={10} ref={contextRef}>
                 {/* only reload event component */}
                 {status === 'loading' ? (
                     <>
@@ -33,7 +34,7 @@ export default function EventDashboard() {
                 )}
             </Grid.Column>
             <Grid.Column width={6}>
-                <div className="ui fixed top sticky" style={{ top: 98, width: 405 }}>
+            <div className="ui fixed top sticky" style={{ top: 98, width: 405 }}>
                     <EventFilters setQuery={setQuery} />
                 </div>
             </Grid.Column>
