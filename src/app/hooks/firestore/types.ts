@@ -1,8 +1,12 @@
 import { OrderByDirection, WhereFilterOp } from 'firebase/firestore';
 
 export type CollectionOptions = {
-    queries?: QueryOptions[];
+    queries?: QueryOptions[]
     sort?: SortOptions
+    limit?: number
+    pagination?: boolean
+    reset?: boolean
+    get?: boolean
 }
 
 export type QueryOptions = {
@@ -12,6 +16,6 @@ export type QueryOptions = {
 }
 
 type SortOptions = {
-    attribute: string,
+    attribute: string
     order: OrderByDirection
 }
