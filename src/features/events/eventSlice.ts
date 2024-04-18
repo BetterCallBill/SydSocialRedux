@@ -12,11 +12,20 @@ export
 */
 
 type State = {
-    data: AppEvent[]
+    data: AppEvent[],
+    loadedInitial: boolean
 }
 
 const initialState: State = {
-    data: []
+    data: [],
+    loadedInitial: false
+}
+
+function removeDuplicates(events: AppEvent[]) {
+    return Array.from(new Set(events
+        .map(x => x.id)))
+        .map(id => events.find(a => a.id === id) as AppEvent)
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 }
 
 /*
@@ -31,8 +40,9 @@ export const eventSlice = createGenericSlice({
     reducers: {
         success: {
             reducer: (state, action: PayloadAction<AppEvent[]>) => {
-                state.data = action.payload;
+                state.data = removeDuplicates([...action.payload, ...state.data])
                 state.status = 'finished';
+                state.loadedInitial = true;
             },
             prepare: (events: any) => {
                 let eventArray: AppEvent[] = [];
