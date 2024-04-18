@@ -55,24 +55,26 @@ export default function ProfileHeader({ profile }: Props) {
                         <Statistic label="Followers" value={profile.followerCount || 0} />
                         <Statistic label="Following" value={profile.followingCount || 0} />
                     </Statistic.Group>
-                    <Divider />
 
                     {!isCurrentUser && (
-                        <Reveal animated="move">
-                            <Reveal.Content visible style={{ width: '100%' }}>
-                                <Button fluid color="teal" content={profile.isFollowing ? 'Following' : 'Not following'} />
-                            </Reveal.Content>
-                            <Reveal.Content hidden style={{ width: '100%' }}>
-                                <Button
-                                    basic
-                                    fluid
-                                    color={profile.isFollowing ? 'red' : 'green'}
-                                    content={profile.isFollowing ? 'Unfollow' : 'Follow'}
-                                    onClick={() => handleFollowToggle(!profile.isFollowing)}
-                                    loading={loading}
-                                />
-                            </Reveal.Content>
-                        </Reveal>
+                        <>
+                            <Divider />
+                            <Reveal animated="move">
+                                <Reveal.Content visible style={{ width: '100%' }}>
+                                    <Button fluid color="teal" content={profile.isFollowing ? 'Following' : 'Not following'} />
+                                </Reveal.Content>
+                                <Reveal.Content hidden style={{ width: '100%' }}>
+                                    <Button
+                                        basic
+                                        fluid
+                                        color={profile.isFollowing ? 'red' : 'green'}
+                                        content={profile.isFollowing ? 'Unfollow' : 'Follow'}
+                                        onClick={() => handleFollowToggle(!profile.isFollowing)}
+                                        loading={loading}
+                                    />
+                                </Reveal.Content>
+                            </Reveal>
+                        </>
                     )}
                 </Grid.Column>
             </Grid>
