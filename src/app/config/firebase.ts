@@ -6,6 +6,12 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from "firebase/storage";
 import { getDatabase } from "firebase/database";
+import { ReCaptchaV3Provider, initializeAppCheck } from "firebase/app-check";
+
+declare global {
+  // eslint-disable-next-line no-var
+  var FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | string | undefined
+}
 
 // Your web app's Firebase configuration
 // Your web app's Firebase configuration
@@ -21,8 +27,17 @@ const firebaseConfig = {
   databaseURL: "https://syd-social-default-rtdb.asia-southeast1.firebasedatabase.app",
 };
 
+if (import.meta.env.DEV) {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider('6Ld2GcApAAAAAHV0NROScMBzb1YNmnwG7hdUHTot'),
+  isTokenAutoRefreshEnabled: true
+})
 
 export const db = getFirestore(app);
 export const auth = getAuth(app);
