@@ -7,6 +7,7 @@ import { useFireStore } from '../../../app/hooks/firestore/useFirestore';
 import EventFilters from './EventFilters';
 import { QueryOptions } from '../../../app/hooks/firestore/types';
 import EventListItemPlaceholder from './EventListItemPlaceholder';
+import EmptyState from '../../../app/layout/EmptyState';
 
 export default function EventDashboard() {
     const dispatch = useAppDispatch();
@@ -50,12 +51,11 @@ export default function EventDashboard() {
                     </>
                 ) : (
                     <>
-                        <EventList 
-                            events={events} 
-                            hasMore={hasMore.current} 
-                            loadMore={loadMore} 
-                            loading={status === 'loading'} 
-                        />
+                        {events.length === 0 ? (
+                            <EmptyState />
+                        ) : (
+                            <EventList events={events} hasMore={hasMore.current} loadMore={loadMore} loading={status === 'loading'} />
+                        )}
                     </>
                 )}
             </Grid.Column>
