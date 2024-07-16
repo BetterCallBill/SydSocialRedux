@@ -3,7 +3,9 @@ import { CollectionOptions } from './types';
 import { db } from '../../config/firebase';
 import { MutableRefObject } from 'react';
 
-export const getQuery = (path: string, options?: CollectionOptions,
+export const getQuery = (
+    path: string, 
+    options?: CollectionOptions,
     lastDocRef?: MutableRefObject<QueryDocumentSnapshot | null>
 ): Query => {
     let q = collection(db, path) as Query;
