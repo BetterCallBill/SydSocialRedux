@@ -1,12 +1,14 @@
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../layout/App';
-import EventDashboard from '../../features/events/dashboard/EventDashboard';
-import EventDetail from '../../features/events/details/EventDetail';
-import EventForm from '../../features/events/form/EventForm';
-import AccountPage from '../../features/auth/AccoutPage';
-import ProfilePage from '../../features/profiles/ProfilePage';
 import RequireAuth from './RequireAuth';
 import UnauthComponent from '../layout/UnauthComponent';
+
+const EventDashboard = lazy(() => import('../../features/events/dashboard/EventDashboard'));
+const EventDetail = lazy(() => import('../../features/events/details/EventDetail'));
+const EventForm = lazy(() => import('../../features/events/form/EventForm'));
+const AccountPage = lazy(() => import('../../features/auth/AccoutPage'));
+const ProfilePage = lazy(() => import('../../features/profiles/ProfilePage'));
 
 export const router = createBrowserRouter([
     {
