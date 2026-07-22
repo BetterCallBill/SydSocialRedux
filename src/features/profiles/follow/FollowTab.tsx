@@ -1,4 +1,4 @@
-import { Card, Grid, Header, Tab } from 'semantic-ui-react';
+import { Card, Grid, Header, TabPane } from 'semantic-ui-react';
 import { useAppSelector } from '../../../app/store/store';
 import FollowCard from './FollowCard';
 import { useFireStore } from '../../../app/hooks/firestore/useFirestore';
@@ -25,7 +25,7 @@ export default function FollowTab({ profileId, activeTab }: Props) {
     }, [activeTab, loadFollowers, loadFollowing]);
 
     return (
-        <Tab.Pane loading={status === 'loading'}>
+        <TabPane loading={status === 'loading'}>
             <Grid>
                 <Grid.Column width={16}>
                     <Header floated="left" icon="user" content={activeTab === 3 ? 'Followers' : 'Following'} />
@@ -38,6 +38,6 @@ export default function FollowTab({ profileId, activeTab }: Props) {
                     </Card.Group>
                 </Grid.Column>
             </Grid>
-        </Tab.Pane>
+        </TabPane>
     );
 }

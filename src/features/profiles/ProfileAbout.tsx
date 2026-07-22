@@ -1,4 +1,4 @@
-import { Button, Grid, Header, Tab } from 'semantic-ui-react';
+import { Button, Grid, Header, TabPane } from 'semantic-ui-react';
 import { Profile } from '../../app/types/profile';
 import { useState } from 'react';
 import ProfileForm from './ProfileForm';
@@ -13,7 +13,7 @@ export default function ProfileAbout({ profile }: Props) {
     const isCurrentUser = auth.currentUser?.uid === profile.id;
 
     return (
-        <Tab.Pane>
+        <TabPane>
             <Grid>
                 <Grid.Column width={16}>
                     <Header floated="left" icon="user" content={`About ${profile.displayName}`} />
@@ -34,6 +34,6 @@ export default function ProfileAbout({ profile }: Props) {
                     )}
                 </Grid.Column>
             </Grid>
-        </Tab.Pane>
+        </TabPane>
     );
 }
