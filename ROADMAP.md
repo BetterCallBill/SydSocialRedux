@@ -66,10 +66,14 @@ Re-run this checklist per app to (re)generate the task table in section 3. Each 
 
 | ID | Priority | Title | Category | Status | Acceptance Criteria | Notes |
 |---|---|---|---|---|---|---|
-| T-001 | P0 | *(example)* Add CI-enforced build/lint/test gate on every PR | CI/CD | Not Started | GitHub Actions workflow runs build+lint+test on PR and blocks merge on failure | |
-| T-002 | P1 | *(example)* Establish baseline test coverage on auth flows | Testing | Not Started | Auth login/register/logout have passing unit tests | |
+| T-002 | P0 | Verify committed Firebase web API key is safely scoped | Security | Not Started | `.env.production` (tracked in git) contains a Firebase web API key. Confirm HTTP-referrer restriction is set in Google Cloud Console and Firestore/Storage security rules deny unauthenticated writes; document the result in the repo | |
+| T-003 | P1 | Add a top-level React error boundary | Error handling & resilience | Not Started | No `ErrorBoundary`/`componentDidCatch` exists anywhere in `src`; an unhandled render error currently blanks the whole app. Wrap the router/App root in an error boundary with a fallback UI | |
+| T-004 | P1 | Establish baseline test coverage on auth flows | Testing & quality gates | Not Started | `LoginForm`, `RegisterForm`, and `authSlice` have passing unit tests covering success and error paths | |
+| T-005 | P2 | Replace stock Vite template README with real project docs | Documentation | Not Started | `README.md` still says "React + TypeScript + Vite" default template; replace with actual setup, env vars, dev/build/test/deploy commands for this app | |
+| T-006 | P2 | Code-split the largest production bundle chunks | Performance | Not Started | `pnpm build` currently emits a 1.5MB JS chunk and 608KB CSS chunk with a chunk-size warning; reduce main chunk below the default 500KB warning threshold via dynamic `import()` / manualChunks | |
+| T-007 | P3 | Upgrade major outdated dependencies (React 19, React Router 7, ESLint 9) | Dependency health | Not Started | `pnpm outdated` shows majors behind (react 18→19, react-router-dom 6→7, eslint 8→10). Upgrade incrementally with build+test green at each step; may need follow-up rows if breaking | |
 
-> Replace the example rows with real findings from the audit in section 2. Keep one row per independently-mergeable unit of work — if a category needs five PRs, that's five rows, not one.
+> Add more rows as new findings surface. Keep one row per independently-mergeable unit of work — if a category needs five PRs, that's five rows, not one.
 
 ---
 
@@ -79,3 +83,4 @@ Re-run this checklist per app to (re)generate the task table in section 3. Each 
 
 | ID | Title | Merged SHA | Date |
 |---|---|---|---|
+| T-001 | Add CI-enforced build/lint/test gate on every PR (also fixed a pre-existing `Tab.Pane` TS build error blocking `pnpm build`, and migrated Firebase workflows from `npm` to `pnpm`) | b4fd0a4 | 2026-07-23 |
