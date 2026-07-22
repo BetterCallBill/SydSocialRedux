@@ -1,7 +1,7 @@
 import { Header, Menu } from 'semantic-ui-react';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { QueryOptions } from '../../../app/hooks/firestore/types';
 import { useAppSelector } from '../../../app/store/store';
 
@@ -10,33 +10,36 @@ type Props = {
 };
 
 export default function EventFilters({ setQuery }: Props) {
-    const startDate = useRef(new Date());
+    const [startDate, setStartDate] = useState(new Date());
     const { currentUser } = useAppSelector(state => state.auth);
     const [filter, setFilter] = useState('all');
     const { status } = useAppSelector(state => state.events);
 
-    function handleSetFilter(filter: string) {
+    // Accepts the date explicitly (rather than reading `startDate` state) so a date
+    // change and the resulting query use the same value in the same tick, since
+    // setState updates are async.
+    function handleSetFilter(filter: string, date: Date = startDate) {
         let q: QueryOptions[];
 
         if (!currentUser?.uid) {
-            q = [{ attribute: 'date', operator: '>=', value: startDate.current }];
+            q = [{ attribute: 'date', operator: '>=', value: date }];
             setQuery(q);
         } else {
             switch (filter) {
                 case 'isGoing':
                     q = [
                         { attribute: 'attendeeIds', operator: 'array-contains', value: currentUser.uid },
-                        { attribute: 'date', operator: '>=', value: startDate.current },
+                        { attribute: 'date', operator: '>=', value: date },
                     ];
                     break;
                 case 'isHost':
                     q = [
                         { attribute: 'hostUid', operator: '==', value: currentUser.uid },
-                        { attribute: 'date', operator: '>=', value: startDate.current },
+                        { attribute: 'date', operator: '>=', value: date },
                     ];
                     break;
                 default:
-                    q = [{ attribute: 'date', operator: '>=', value: startDate.current }];
+                    q = [{ attribute: 'date', operator: '>=', value: date }];
                     break;
             }
             setFilter(filter);
@@ -73,10 +76,11 @@ export default function EventFilters({ setQuery }: Props) {
             <Header icon="calendar" attached color="teal" content="Select date" />
             <Calendar
                 onChange={date => {
-                    startDate.current = date as Date;
-                    handleSetFilter(filter);
+                    const newDate = date as Date;
+                    setStartDate(newDate);
+                    handleSetFilter(filter, newDate);
                 }}
-                value={startDate.current}
+                value={startDate}
             />
         </>
     );
