@@ -67,7 +67,6 @@ Re-run this checklist per app to (re)generate the task table in section 3. Each 
 | ID | Priority | Title | Category | Status | Acceptance Criteria | Notes |
 |---|---|---|---|---|---|---|
 | T-002 | P0 | Verify committed Firebase web API key is safely scoped | Security | Blocked | `.env.production` (tracked in git) contains a Firebase web API key. Confirm HTTP-referrer restriction is set in Google Cloud Console and Firestore/Storage security rules deny unauthenticated writes; document the result in the repo | Needs human with Firebase/GCP console access — the loop has no credentials to check console-side restrictions, and rules aren't in this repo to review locally (see T-008) |
-| T-006 | P2 | Code-split the largest production bundle chunks | Performance | Not Started | `pnpm build` currently emits a 1.5MB JS chunk and 608KB CSS chunk with a chunk-size warning; reduce main chunk below the default 500KB warning threshold via dynamic `import()` / manualChunks | |
 | T-007 | P3 | Upgrade major outdated dependencies (React 19, React Router 7, ESLint 9) | Dependency health | Not Started | `pnpm outdated` shows majors behind (react 18→19, react-router-dom 6→7, eslint 8→10). Upgrade incrementally with build+test green at each step; may need follow-up rows if breaking | |
 | T-008 | P1 | Version-control Firestore/Storage security rules | Security | Not Started | `firebase.json` only configures `hosting` — no `firestore.rules`/`storage.rules` exist in this repo, so rules can only be reviewed/audited by pulling them from the live Firebase Console. Add the rules files to the repo (pulled from current prod config) and wire `firestore`/`storage` sections into `firebase.json` and the deploy workflow. Requires a human to export the current live rules first — the loop cannot fabricate them | |
 
@@ -85,3 +84,4 @@ Re-run this checklist per app to (re)generate the task table in section 3. Each 
 | T-003 | Add a top-level React error boundary | 90c5125 | 2026-07-23 |
 | T-004 | Establish baseline test coverage on auth flows | a10ff8d | 2026-07-23 |
 | T-005 | Replace stock Vite template README with real project docs | 8c74148 | 2026-07-23 |
+| T-006 | Code-split routed pages and vendor (firebase/semantic-ui) chunks; largest JS chunk went from 1.5MB to ~292KB | a34842f | 2026-07-23 |
