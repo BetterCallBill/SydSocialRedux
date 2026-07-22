@@ -49,8 +49,7 @@ export default function ProfileEvents({ profile }: Props) {
                 options.reset = true;
                 break;
             default:
-                options = initialOptions;
-                options.reset = true;
+                options = { ...initialOptions };
                 break;
         }
         setOptions(options);
