@@ -25,7 +25,11 @@ export const profileSlice = createGenericSlice({
             },
             prepare: (profiles) => {
                 let profileArray: Profile[] = [];
-                Array.isArray(profiles) ? profileArray = profiles : profileArray.push(profiles);
+                if (Array.isArray(profiles)) {
+                    profileArray = profiles;
+                } else {
+                    profileArray.push(profiles);
+                }
                 const mapped = profileArray.map(profile => {
                     return {
                         ...profile,

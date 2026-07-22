@@ -9,7 +9,6 @@ import { getDatabase } from "firebase/database";
 import { ReCaptchaV3Provider, initializeAppCheck } from "firebase/app-check";
 
 declare global {
-  // eslint-disable-next-line no-var
   var FIREBASE_APPCHECK_DEBUG_TOKEN: boolean | string | undefined
 }
 

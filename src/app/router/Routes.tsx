@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- this is a router config module, not a component file; fast refresh doesn't apply */
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../layout/App';

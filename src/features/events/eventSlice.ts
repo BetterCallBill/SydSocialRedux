@@ -46,7 +46,11 @@ export const eventSlice = createGenericSlice({
             },
             prepare: (events: any) => {
                 let eventArray: AppEvent[] = [];
-                Array.isArray(events) ? eventArray = events : eventArray.push(events);
+                if (Array.isArray(events)) {
+                    eventArray = events;
+                } else {
+                    eventArray.push(events);
+                }
                 const mapped = eventArray.map((e: any) => {
                     return {
                         ...e,
