@@ -1,4 +1,4 @@
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, useForm, useWatch } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { Button, Form, Header, Icon, Label, Segment } from 'semantic-ui-react';
 import { useAppSelector } from '../../app/store/store';
@@ -16,14 +16,14 @@ export default function AccountPage() {
         reset,
         getValues,
         setError,
-        watch,
+        control,
         trigger,
         formState: { errors, isSubmitting, isValid },
     } = useForm({
         mode: 'onTouched',
     });
-    const password1 = watch('password1');
-    const password2 = watch('password2');
+    const password1 = useWatch({ control, name: 'password1' });
+    const password2 = useWatch({ control, name: 'password2' });
 
     useEffect(() => {
         if (password2) trigger('password2');
