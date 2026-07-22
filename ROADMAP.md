@@ -66,12 +66,12 @@ Re-run this checklist per app to (re)generate the task table in section 3. Each 
 
 | ID | Priority | Title | Category | Status | Acceptance Criteria | Notes |
 |---|---|---|---|---|---|---|
-| T-002 | P0 | Verify committed Firebase web API key is safely scoped | Security | Not Started | `.env.production` (tracked in git) contains a Firebase web API key. Confirm HTTP-referrer restriction is set in Google Cloud Console and Firestore/Storage security rules deny unauthenticated writes; document the result in the repo | |
-| T-003 | P1 | Add a top-level React error boundary | Error handling & resilience | Not Started | No `ErrorBoundary`/`componentDidCatch` exists anywhere in `src`; an unhandled render error currently blanks the whole app. Wrap the router/App root in an error boundary with a fallback UI | |
+| T-002 | P0 | Verify committed Firebase web API key is safely scoped | Security | Blocked | `.env.production` (tracked in git) contains a Firebase web API key. Confirm HTTP-referrer restriction is set in Google Cloud Console and Firestore/Storage security rules deny unauthenticated writes; document the result in the repo | Needs human with Firebase/GCP console access — the loop has no credentials to check console-side restrictions, and rules aren't in this repo to review locally (see T-008) |
 | T-004 | P1 | Establish baseline test coverage on auth flows | Testing & quality gates | Not Started | `LoginForm`, `RegisterForm`, and `authSlice` have passing unit tests covering success and error paths | |
 | T-005 | P2 | Replace stock Vite template README with real project docs | Documentation | Not Started | `README.md` still says "React + TypeScript + Vite" default template; replace with actual setup, env vars, dev/build/test/deploy commands for this app | |
 | T-006 | P2 | Code-split the largest production bundle chunks | Performance | Not Started | `pnpm build` currently emits a 1.5MB JS chunk and 608KB CSS chunk with a chunk-size warning; reduce main chunk below the default 500KB warning threshold via dynamic `import()` / manualChunks | |
 | T-007 | P3 | Upgrade major outdated dependencies (React 19, React Router 7, ESLint 9) | Dependency health | Not Started | `pnpm outdated` shows majors behind (react 18→19, react-router-dom 6→7, eslint 8→10). Upgrade incrementally with build+test green at each step; may need follow-up rows if breaking | |
+| T-008 | P1 | Version-control Firestore/Storage security rules | Security | Not Started | `firebase.json` only configures `hosting` — no `firestore.rules`/`storage.rules` exist in this repo, so rules can only be reviewed/audited by pulling them from the live Firebase Console. Add the rules files to the repo (pulled from current prod config) and wire `firestore`/`storage` sections into `firebase.json` and the deploy workflow. Requires a human to export the current live rules first — the loop cannot fabricate them | |
 
 > Add more rows as new findings surface. Keep one row per independently-mergeable unit of work — if a category needs five PRs, that's five rows, not one.
 
@@ -84,3 +84,4 @@ Re-run this checklist per app to (re)generate the task table in section 3. Each 
 | ID | Title | Merged SHA | Date |
 |---|---|---|---|
 | T-001 | Add CI-enforced build/lint/test gate on every PR (also fixed a pre-existing `Tab.Pane` TS build error blocking `pnpm build`, and migrated Firebase workflows from `npm` to `pnpm`) | b4fd0a4 | 2026-07-23 |
+| T-003 | Add a top-level React error boundary | 90c5125 | 2026-07-23 |
