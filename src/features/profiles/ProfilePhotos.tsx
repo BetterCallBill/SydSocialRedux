@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Tab, Grid, Header, Button, Card, Image } from 'semantic-ui-react';
+import { TabPane, Grid, Header, Button, Card, Image } from 'semantic-ui-react';
 import { Photo, Profile } from '../../app/types/profile';
 import { auth, storage } from '../../app/config/firebase';
 import PhotoUpload from './PhotoUpload';
@@ -43,7 +43,7 @@ export default function ProfilePhotos({ profile }: Props) {
     }
 
     return (
-        <Tab.Pane loading={status === 'loading'}>
+        <TabPane loading={status === 'loading'}>
             <Grid>
                 <Grid.Column width={16}>
                     <Header floated="left" icon="photo" content="Photos" />
@@ -83,6 +83,6 @@ export default function ProfilePhotos({ profile }: Props) {
                     )}
                 </Grid.Column>
             </Grid>
-        </Tab.Pane>
+        </TabPane>
     );
 }

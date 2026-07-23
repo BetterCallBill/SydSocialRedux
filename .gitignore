@@ -28,3 +28,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Firebase CLI local state (not used for deployment; Auth/Firestore/Storage config is in src/app/config/firebase.ts)
+.firebase
+
+# Claude Code local config
+.claude
+
+# Personal notes, not part of the shipped repo
+interview_prep.md

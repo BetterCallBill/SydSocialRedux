@@ -3,11 +3,12 @@ import NavBar from './nav/NavBar';
 import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import ModalManager from '../common/modals/ModalManager';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useAppDispatch } from '../store/store';
 import { auth } from '../config/firebase';
 import { logout, signIn } from '../../features/auth/authSlice';
+import LoadingComponent from './LoadingComponent';
 
 function App() {
     const location = useLocation();
@@ -37,7 +38,9 @@ function App() {
                     <ModalManager />
                     <NavBar />
                     <Container className="main">
-                        <Outlet />
+                        <Suspense fallback={<LoadingComponent />}>
+                            <Outlet />
+                        </Suspense>
                     </Container>
                 </>
             )}

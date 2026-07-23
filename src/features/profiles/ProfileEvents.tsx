@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Grid, Header, Tab, Image } from 'semantic-ui-react';
+import { Card, Grid, Header, Tab, TabPane, Image } from 'semantic-ui-react';
 import { Profile } from '../../app/types/profile';
 import { useFireStore } from '../../app/hooks/firestore/useFirestore';
 import { useAppSelector } from '../../app/store/store';
@@ -49,8 +49,7 @@ export default function ProfileEvents({ profile }: Props) {
                 options.reset = true;
                 break;
             default:
-                options = initialOptions;
-                options.reset = true;
+                options = { ...initialOptions };
                 break;
         }
         setOptions(options);
@@ -61,7 +60,7 @@ export default function ProfileEvents({ profile }: Props) {
     }, [loadCollection, options]);
 
     return (
-        <Tab.Pane loading={status === 'loading'}>
+        <TabPane loading={status === 'loading'}>
             <Grid>
                 <Grid.Column width={16}>
                     <Header floated="left" icon="calendar" content="events" />
@@ -87,6 +86,6 @@ export default function ProfileEvents({ profile }: Props) {
                     </Card.Group>
                 </Grid.Column>
             </Grid>
-        </Tab.Pane>
+        </TabPane>
     );
 }
