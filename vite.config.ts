@@ -4,6 +4,8 @@ import react from '@vitejs/plugin-react-swc'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // GitHub Pages serves this as a project site at /SydSocialRedux/, not the domain root.
+  base: process.env.GITHUB_PAGES ? '/SydSocialRedux/' : '/',
   server: {
     port: 3000
   },

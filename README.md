@@ -1,6 +1,6 @@
 # Syd Social
 
-A social events app: browse and create events, RSVP, chat on event pages, and follow other users' profiles. Built with React, TypeScript, Redux Toolkit, and Firebase (Auth, Firestore, Storage), bundled with Vite.
+A social events app: browse and create events, RSVP, chat on event pages, and follow other users' profiles. Built with React, TypeScript, Redux Toolkit, and Firebase (Auth, Firestore, Storage), bundled with Vite, deployed to GitHub Pages via GitHub Actions.
 
 ## Getting started
 
@@ -40,13 +40,51 @@ Tests use [Vitest](https://vitest.dev/) with [React Testing Library](https://tes
 
 ## Deployment
 
-Firebase Hosting, deployed via GitHub Actions:
+Static hosting on **GitHub Pages**, built and deployed by **GitHub Actions**. Firebase is used only as the app's backend (Auth, Firestore, Storage) — there is no Firebase Hosting/CLI involved in shipping the app anymore.
 
 - `.github/workflows/ci.yml` — runs build, lint, and test on every PR and on pushes to `main`/`test`.
-- `.github/workflows/firebase-hosting-merge.yml` — deploys to the live Firebase Hosting channel on push to `main`.
-- `.github/workflows/firebase-hosting-pull-request.yml` — deploys a preview channel for each PR.
+- `.github/workflows/deploy.yml` — on push to `main`, builds with `GITHUB_PAGES=true` (so Vite emits asset URLs under the `/SydSocialRedux/` project-page base) and publishes `dist/` to GitHub Pages via `actions/deploy-pages`.
 
-Hosting config lives in `firebase.json` (serves `dist/` as a single-page app). Firestore/Storage security rules are managed directly in the Firebase Console and are not yet version-controlled in this repo (tracked as a roadmap item in `ROADMAP.md`).
+Because GitHub Pages is a static file host with no server-side rewrites, a hard refresh or direct link on a client-side route (e.g. `/events/123`) would normally 404. `public/404.html` + a small inline script in `index.html` implement the standard [spa-github-pages](https://github.com/rafgraph/spa-github-pages) redirect trick to work around that — see the comments in those files.
+
+One-time repo setup (already done for this repo, noted here for forks): in **Settings → Pages**, set the source to "GitHub Actions"; the `VITE_FIREBASE_API_KEY` secret must exist under **Settings → Secrets and variables → Actions**.
+
+Firestore/Storage security rules are managed directly in the Firebase Console and are not yet version-controlled in this repo (tracked as a roadmap item in `ROADMAP.md`).
+
+## System design
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  Browser (SPA)                                                        │
+│                                                                        │
+│   React (UI) ── react-router-dom (routing) ── Redux Toolkit (state)   │
+│        │                                             │                │
+│        │                                   feature slices dispatch    │
+│        │                                   async thunks/actions       │
+│        ▼                                             ▼                │
+│   Semantic UI React                       src/app/actions/            │
+│   (components)                            firestoreActions.ts         │
+│                                                       │                │
+└───────────────────────────────────────────────────────┼───────────────┘
+                                                          │ Firebase JS SDK
+                                                          ▼
+                              ┌───────────────────────────────────────┐
+                              │  Firebase (backend-as-a-service)       │
+                              │  - Auth        → email/password,       │
+                              │                  Google/Facebook       │
+                              │  - Firestore   → events, profiles,     │
+                              │                  chat messages         │
+                              │  - Storage     → profile/event photos  │
+                              │  - App Check   → reCAPTCHA v3 abuse    │
+                              │                  protection            │
+                              └───────────────────────────────────────┘
+```
+
+- **Frontend**: React + TypeScript, bundled by Vite. Routing is declared centrally in [`src/app/router/Routes.tsx`](src/app/router/Routes.tsx); `RequireAuth` gates event-management, profile, and account routes behind a signed-in user.
+- **State**: Redux Toolkit slices per feature (`authSlice`, `eventSlice`, `profileSlice`), combined in [`src/app/store`](src/app/store). Components read via `useSelector`/typed hooks rather than talking to Firebase directly.
+- **Data access**: Firestore reads go through the `useFirestore` hook ([`src/app/hooks/firestore`](src/app/hooks/firestore)), which subscribes to a query and dispatches results into the relevant slice; writes go through thunks in [`src/app/actions/firestoreActions.ts`](src/app/actions/firestoreActions.ts). This keeps components decoupled from the Firebase SDK — see the Testing section for why that matters.
+- **Backend**: Firebase is used as a hosted backend, not a server we run — Auth for sign-in, Firestore as the primary document store, Storage for uploaded images, App Check to gate abuse. Config/keys live in [`src/app/config/firebase.ts`](src/app/config/firebase.ts).
+- **Build/deploy**: Vite builds a static bundle (code-split by route and by vendor chunk — see `vite.config.ts`); GitHub Actions ships that bundle to GitHub Pages. No backend server to deploy or scale — the "backend" is entirely Firebase's managed infrastructure.
 
 ## Project structure
 

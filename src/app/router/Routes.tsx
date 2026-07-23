@@ -11,24 +11,28 @@ const EventForm = lazy(() => import('../../features/events/form/EventForm'));
 const AccountPage = lazy(() => import('../../features/auth/AccoutPage'));
 const ProfilePage = lazy(() => import('../../features/profiles/ProfilePage'));
 
-export const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <App />,
-        children: [
-            {
-                element: <RequireAuth />,
-                children: [
-                    // oops you need auth
-                    { path: '/manage/:id', element: <EventForm /> },
-                    { path: '/profiles/:id', element: <ProfilePage /> },
-                    { path: '/createEvent', element: <EventForm key="create" /> },
-                    { path: '/account', element: <AccountPage /> },
-                ],
-            },
-            { path: '/events', element: <EventDashboard /> },
-            { path: '/events/:id', element: <EventDetail /> },
-            { path: '/unauthorised', element: <UnauthComponent /> },
-        ],
-    },
-]);
+export const router = createBrowserRouter(
+    [
+        {
+            path: '/',
+            element: <App />,
+            children: [
+                {
+                    element: <RequireAuth />,
+                    children: [
+                        // oops you need auth
+                        { path: '/manage/:id', element: <EventForm /> },
+                        { path: '/profiles/:id', element: <ProfilePage /> },
+                        { path: '/createEvent', element: <EventForm key="create" /> },
+                        { path: '/account', element: <AccountPage /> },
+                    ],
+                },
+                { path: '/events', element: <EventDashboard /> },
+                { path: '/events/:id', element: <EventDetail /> },
+                { path: '/unauthorised', element: <UnauthComponent /> },
+            ],
+        },
+    ],
+    // Matches the Vite `base` config so routing works under GitHub Pages' /SydSocialRedux/ project path.
+    { basename: import.meta.env.BASE_URL },
+);
